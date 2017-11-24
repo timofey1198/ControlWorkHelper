@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace ControlWorkHelper
 {
@@ -11,14 +12,13 @@ namespace ControlWorkHelper
     {
         static void Main(string[] args)
         {
-            
-
-
-            string pattern = "commit ([a-z,0-9]){39,40}Author: ";
-            Regex regex = new Regex();
-
-
-            
+            List<Commit> commits = LogParser.GetAllCommits();
+            foreach(Commit commit in commits)
+            {
+                Console.WriteLine(commit.User);
+                Console.WriteLine(commit.Email);
+                Console.WriteLine(commit.Date);
+            }
         }
     }
 }
