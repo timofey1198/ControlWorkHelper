@@ -20,10 +20,12 @@ namespace ControlWorkHelper
 
         public Commit(string date, string email, string user)
         {
-            Date = DateTime.ParseExact(date.Substring(8, 20), "dd HH:mm:ss yyyy zz", CultureInfo.InvariantCulture);
+            Date = DateTime.ParseExact(date, "dd HH:mm:ss yyyy zz", CultureInfo.InvariantCulture);
             Email = email;
             User = user;
             CommitText = "";
         }
+
+        public Commit() { }
     }
 }
