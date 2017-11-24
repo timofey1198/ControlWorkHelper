@@ -12,7 +12,7 @@ namespace ControlWorkHelper
         public string CommitText { get; set; }
         public Commit(string date, string email, string user, string commit_text)
         {
-            Date = DateTime.ParseExact(date.Substring(8, 20), "dd HH:mm:ss yyyy zz", CultureInfo.InvariantCulture);
+            Date = DateTime.ParseExact(date, "dd HH:mm:ss yyyy zz", CultureInfo.InvariantCulture);
             Email = email;
             User = user;
             CommitText = commit_text;
