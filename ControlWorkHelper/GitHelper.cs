@@ -9,7 +9,7 @@ namespace ControlWorkHelper
 {
     class GitHelper
     {
-        public static void Checkout(string localBranch, bool isExist)
+        public static void LocalCheckout(string localBranch, bool isExist)
         {
             if (isExist)
             {
@@ -21,6 +21,14 @@ namespace ControlWorkHelper
                 Process process = Process.Start("git", "-B checkout " + localBranch);
                 process.Close();
             }
+        }
+
+
+        public static void Checkout(string branch, string repos = "origin")
+        {
+            Process process = Process.Start("git", string.Format("-f -B checkout {0} {1}/{0}",
+                branch, repos));
+            process.Close();
         }
 
         /// <summary>
