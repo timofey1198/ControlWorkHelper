@@ -8,7 +8,6 @@ namespace ControlWorkHelper
 {
     public class LogParser
     {
-        private static string logPath = "E://log.txt";
         private static string commitPattern = 
             "commit ([a-z,A-Z,0-9,\\s,:]){30,100}Author: ";
         private static string datePattern = 
@@ -40,9 +39,7 @@ namespace ControlWorkHelper
 
         private static string[] ParseLog()
         {
-            StreamReader fileIn = new StreamReader(logPath);
-            string log = fileIn.ReadToEnd();
-            fileIn.Close();
+            string log = GitHelper.Log();
             string[] Commits = Regex.Split(log, commitPattern);
             return Commits;
         }
