@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace ControlWorkHelper
 {
@@ -26,7 +27,7 @@ namespace ControlWorkHelper
 
         public static void Checkout(string branch, string repos = "origin")
         {
-            Process process = Process.Start("git", string.Format("checkout -f -B test {1}/{0}",
+            Process process = Process.Start("git", string.Format("checkout -f -B {0} {1}/{0}",
                 branch, repos));
             process.Close();
         }
@@ -53,5 +54,19 @@ namespace ControlWorkHelper
             return _out;
         }
 
+
+        public static void Clone(string repos)
+        {
+            // Задаем параметры процесса
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = "git";
+            psi.Arguments = string.Format("clone {0}", repos);
+            psi.RedirectStandardOutput = true;
+            psi.RedirectStandardInput = true;
+            psi.UseShellExecute = false;
+            // Создаем процесс
+            Process process = Process.Start(psi);
+            StreamReader output = process.StandardOutput;
+        }
     }
 }
