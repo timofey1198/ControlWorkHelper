@@ -8,18 +8,21 @@ namespace ControlWorkHelper
 {
     class Person
     {
-        public string Name { get; }
-        public string Surname { get; }
+        public string GithubName { get;}
+        public string Name { get; set; }
+        public string Surname { get; set; }
         public string Email { get; }
-        public Commit LastCommit { get; }
-        public int PenaltyPoints { get; }
-        public string Comment { get; }
+        public Commit LastCommit { get; set; }
+        public int PenaltyPoints { get; set; }
+        public string Comment { get; set; }
 
 
-        public Person () 
+        public Person() {}
+
+        public Person(string email, string githubName)
         {
+            Email = email;
+            GithubName = githubName;
         }
-
-
     }
 }
