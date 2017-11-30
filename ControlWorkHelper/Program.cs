@@ -13,12 +13,17 @@ namespace ControlWorkHelper
     {
         static void Main(string[] args)
         {
+            //Console.WriteLine("Введите расположение репозитория:");
+            //string path = Console.ReadLine();
+            //Process p = Process.Start("cd", path);
+            GitHelper.Checkout("master", "https://github.com/DimaT1/gg.git");
             List<Commit> commits = LogParser.GetAllCommits();
             foreach (Commit commit in commits)
             {
                 Console.WriteLine(commit.User);
                 Console.WriteLine(commit.Email);
                 Console.WriteLine(commit.Date);
+                Console.WriteLine();
             }
             //Process process = Process.Start("log.bat");
             

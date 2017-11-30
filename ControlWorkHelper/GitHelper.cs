@@ -26,7 +26,7 @@ namespace ControlWorkHelper
 
         public static void Checkout(string branch, string repos = "origin")
         {
-            Process process = Process.Start("git", string.Format("checkout -f -B {0} {1}/{0}",
+            Process process = Process.Start("git", string.Format("checkout -f -B test {1}/{0}",
                 branch, repos));
             process.Close();
         }
