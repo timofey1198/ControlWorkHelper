@@ -25,6 +25,8 @@ namespace ControlWorkHelper
             GithubName = githubName;
             Name = "";
             Surname = "";
+            PenaltyPoints = 0;
+            Comment = "";
         }
 
         public override string ToString()

@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace ControlWorkHelper
 {
-    class Program
+    class Program:Helper
     {
         static void Main(string[] args)
         {
@@ -20,20 +20,52 @@ namespace ControlWorkHelper
             //Console.WriteLine(GitHelper.Log("xxx"));
             
 
-            string repos = "gg";
+            string repos = "";
+            string confirm = "n";
+            while (confirm == "n")
+            {
+                Console.WriteLine("Введите название работы (имя репозитория):");
+                repos = Console.ReadLine();
+                Console.WriteLine("Вы уверены?(y/n)");
+                confirm = Console.ReadLine();
+            }
+
+            Console.WriteLine("Введите информацию о времени начала работы:");
+            int year = IntInput("Введите год:");
+            int month = IntInput("Введите месяц:");
+            int day = IntInput("Введите число:");
+            int hour = IntInput("Введите час:");
+            int minute = IntInput("Введите минуту:");
+            DateTime startTime = new DateTime(year, month, day, hour, minute, 0);
+
             List<List<string>> db = CSVHelper.ReadAll("Книга1.csv");
+            string url, email, githubName, name, surname;
+            Commit lastCommit;
+            // Список студентов
+            List<Person> students = new List<Person>();
             foreach (List<string> user in db)
             {
-                string url = string.Format("https://github.com/{0}/{1}.git", user[0], repos);
-                GitHelper.Clone(url, user[1]);
-                List<Commit> commits = LogParser.GetAllCommits(user[1]);
-                foreach (Commit commit in commits)
+                githubName = user[0];
+                email = user[1];
+                url = string.Format("https://github.com/{0}/{1}.git", githubName, repos);
+
+                Person person = new Person(email, githubName);
+
+                GitHelper.Clone(url, email);
+                List<Commit> commits = LogParser.GetAllCommits(email);
+                if (commits.Count != 0)
                 {
-                    Console.WriteLine(commit.User);
-                    Console.WriteLine(commit.Email);
-                    Console.WriteLine(commit.Date);
-                    Console.WriteLine();
+                    lastCommit = commits[0];
+                    person.LastCommit = lastCommit;
+                    Console.WriteLine(startTime - lastCommit.Date);
                 }
+                else { person.LastCommit = null; }
+                students.Add(person);
+            }
+
+            foreach (Person person in students)
+            {
+                Console.WriteLine(person);
             }
 
             //ProcessStartInfo psi = new ProcessStartInfo();
