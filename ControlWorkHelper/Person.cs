@@ -23,6 +23,15 @@ namespace ControlWorkHelper
         {
             Email = email;
             GithubName = githubName;
+            Name = "";
+            Surname = "";
+        }
+
+        public override string ToString()
+        {
+            string str = string.Format("Имя: {0}\n Фамилия: {1}\n Почта: {2}\n Время отправки: {3}\n Штраф: {4}\n Комментарий: {5}",
+                Name, Surname, Email, LastCommit.Date, PenaltyPoints, Comment);
+            return str;
         }
     }
 }
