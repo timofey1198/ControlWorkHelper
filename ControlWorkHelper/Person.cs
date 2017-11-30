@@ -13,7 +13,12 @@ namespace ControlWorkHelper
         public string Email { get; }
         public Commit LastCommit { get; }
         public int PenaltyPoints { get; }
+        public string Comment { get; }
 
+
+        public Person () 
+        {
+        }
 
 
     }
