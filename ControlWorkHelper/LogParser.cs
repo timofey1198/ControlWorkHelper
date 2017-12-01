@@ -11,7 +11,7 @@ namespace ControlWorkHelper
         private static string commitPattern = 
             "commit ([a-z,A-Z,0-9,\\s,:]){30,100}Author: ";
         private static string datePattern = 
-            "[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [0-9]{4} [\\+, -]{0,1}[0-9]{2}";
+            "[A-Z]{1}[a-z]{1,2} [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [0-9]{4} [\\+, -]{0,1}[0-9]{2}";
         public static List<Commit> GetAllCommits()
         {
             string[] strCommits = ParseLog();
