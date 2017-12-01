@@ -38,9 +38,16 @@ namespace ControlWorkHelper
             int minute = IntInput("Введите минуту:");
             DateTime startTime = new DateTime(year, month, day, hour, minute, 0);
 
+            Console.WriteLine();
+            int limit = IntInput("Введите время на работу (в минутах):");
+            //startTime.Subtract
+            TimeSpan timeLimit = new TimeSpan(0, limit, 0);
+            //DateTime endTime = new DateTime(year, month, day, hour, minute, 0);
+
             List<List<string>> db = CSVHelper.ReadAll("Книга1.csv");
             string url, email, githubName, name, surname;
             Commit lastCommit;
+            TimeSpan workTime;
             // Список студентов
             List<Person> students = new List<Person>();
             foreach (List<string> user in db)
@@ -57,7 +64,13 @@ namespace ControlWorkHelper
                 {
                     lastCommit = commits[0];
                     person.LastCommit = lastCommit;
-                    Console.WriteLine(startTime - lastCommit.Date);
+                    workTime = lastCommit.Date.Subtract(startTime);
+                    Console.WriteLine(workTime);
+                    if (workTime > timeLimit)
+                    {
+                        Console.WriteLine("Превышено время работы.");
+                        Console.WriteLine(workTime - timeLimit);
+                    }
                 }
                 else { person.LastCommit = null; }
                 students.Add(person);
