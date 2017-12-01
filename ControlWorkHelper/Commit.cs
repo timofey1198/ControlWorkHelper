@@ -20,7 +20,7 @@ namespace ControlWorkHelper
 
         public Commit(string date, string email, string user)
         {
-            Date = DateTime.ParseExact(date, "dd HH:mm:ss yyyy zz", CultureInfo.InvariantCulture);
+            Date = DateTime.ParseExact(date, "MMM dd HH:mm:ss yyyy zz", CultureInfo.InvariantCulture);
             Email = email;
             User = user;
             CommitText = "";
