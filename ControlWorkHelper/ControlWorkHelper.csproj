@@ -43,7 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commit.cs" />
+    <Compile Include="CSVHelper.cs" />
+    <Compile Include="GitHelper.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="LogParser.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
