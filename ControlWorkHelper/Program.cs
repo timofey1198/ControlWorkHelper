@@ -39,11 +39,11 @@ namespace ControlWorkHelper
 
             // Ввод времени начала работы
             Console.WriteLine("Введите информацию о времени начала работы:");
-            int year = IntInput("Введите год:");
-            int month = IntInput("Введите месяц:");
-            int day = IntInput("Введите число:");
-            int hour = IntInput("Введите час:");
-            int minute = IntInput("Введите минуту:");
+            int year = IntInput("Введите год:", 2017, 2021);
+            int month = IntInput("Введите месяц:", 1, 12);
+            int day = IntInput("Введите число:", 1, 31);
+            int hour = IntInput("Введите час:", 0, 23);
+            int minute = IntInput("Введите минуту:", 0, 59);
             // Время начала работы
             DateTime startTime = new DateTime(year, month, day, hour, minute, 0);
 
@@ -98,7 +98,7 @@ namespace ControlWorkHelper
                         {
                             person.PenaltyPoints = penaltyPoints[delay.Minutes];
                         }
-                        person.Comment = "Превышено время работы.";
+                        person.Comment = "Превышено время работы на " + delay;
                     }
                     else if (workTime < TimeSpan.Zero)
                     {
