@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.IO;
-using System.Diagnostics;
+
 
 namespace ControlWorkHelper
 {
@@ -13,13 +8,25 @@ namespace ControlWorkHelper
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Введите расположение репозитория:");
-            //string path = Console.ReadLine();
-            //Process p = Process.Start("cd", path);
-            //GitHelper.Clone("https://github.com/DimaT1/gg.git");
-            //Console.WriteLine(GitHelper.Log("xxx"));
-            
+            // Получаем таблицу штрафных баллов
+            List<List<string>> penaltyPointsStr = CSVHelper.ReadAll("PenaltyPoints.csv");
+            Dictionary<int, int> penaltyPoints = new Dictionary<int, int>();
+            int currentMinute = 0;
+            int lastMinute = 0;
+            foreach (List<string> str in penaltyPointsStr)
+            {
+                lastMinute = currentMinute;
+                currentMinute = int.Parse(str[0]);
+                for (int i = lastMinute; i < currentMinute; i++)
+                {
+                    penaltyPoints.Add(i, int.Parse(str[1]));
+                }
+            }
 
+            // Максимальная задержка, после которой работа аннулируется
+            TimeSpan maxDelay = new TimeSpan(0, currentMinute, 0);
+
+            // Ввод названия репозитория контрольной
             string repos = "";
             string confirm = "n";
             while (confirm == "n")
@@ -30,75 +37,90 @@ namespace ControlWorkHelper
                 confirm = Console.ReadLine();
             }
 
+            // Ввод времени начала работы
             Console.WriteLine("Введите информацию о времени начала работы:");
             int year = IntInput("Введите год:");
             int month = IntInput("Введите месяц:");
             int day = IntInput("Введите число:");
             int hour = IntInput("Введите час:");
             int minute = IntInput("Введите минуту:");
+            // Время начала работы
             DateTime startTime = new DateTime(year, month, day, hour, minute, 0);
 
+            // Ввод времени отведенного на работу
             Console.WriteLine();
             int limit = IntInput("Введите время на работу (в минутах):");
-            //startTime.Subtract
+            // Время на работу
             TimeSpan timeLimit = new TimeSpan(0, limit, 0);
-            //DateTime endTime = new DateTime(year, month, day, hour, minute, 0);
 
-            List<List<string>> db = CSVHelper.ReadAll("Книга1.csv");
+            // Считывание данных о студентах
+            List<List<string>> db = CSVHelper.ReadAll("DataBase.csv");
+
+            // Основные используемые переменные
             string url, email, githubName, name, surname;
-            Commit lastCommit;
-            TimeSpan workTime;
+            Commit lastCommit; // Объект последнего коммита
+            TimeSpan workTime; // Время работы студента
+            TimeSpan delay; // Опоздание отправки
+
             // Список студентов
             List<Person> students = new List<Person>();
             foreach (List<string> user in db)
             {
+                // Генерация уникальной ссылки на репозиторий
+                // студента с решением контрольной
                 githubName = user[0];
                 email = user[1];
                 url = string.Format("https://github.com/{0}/{1}.git", githubName, repos);
 
+                // Объект студента
                 Person person = new Person(email, githubName);
 
+                // Сохранение репозитория студента
                 GitHelper.Clone(url, email);
+                // Список всех коммитов студента
                 List<Commit> commits = LogParser.GetAllCommits(email);
+
+                // Расчет штрафа для студента
                 if (commits.Count != 0)
                 {
-                    lastCommit = commits[0];
+                    lastCommit = commits[0]; // Последний коммит
                     person.LastCommit = lastCommit;
-                    workTime = lastCommit.Date.Subtract(startTime);
-                    Console.WriteLine(workTime);
-                    if (workTime > timeLimit)
+                    workTime = lastCommit.Date.Subtract(startTime); // Время работы
+                    delay = workTime.Subtract(timeLimit); // Опоздание
+                    
+                    if (delay > TimeSpan.Zero)
                     {
-                        Console.WriteLine("Превышено время работы.");
-                        Console.WriteLine(workTime - timeLimit);
+                        if (delay >= maxDelay)
+                        {
+                            person.PenaltyPoints = 10;
+                        }
+                        else
+                        {
+                            person.PenaltyPoints = penaltyPoints[delay.Minutes];
+                        }
+                        person.Comment = "Превышено время работы.";
+                    }
+                    else if (workTime < TimeSpan.Zero)
+                    {
+                        person.Comment = "Работа не была начата.";
+                        person.PenaltyPoints = 10;
                     }
                 }
-                else { person.LastCommit = null; }
+                else
+                {
+                    person.LastCommit = null;
+                    person.Comment = "Работа не была начата.";
+                    person.PenaltyPoints = 10;
+                }
+                // Добавляем объект сдудента в общий список
                 students.Add(person);
             }
 
+            // Вывод всех студентов в консоль
             foreach (Person person in students)
             {
                 Console.WriteLine(person);
             }
-
-            //ProcessStartInfo psi = new ProcessStartInfo();
-            //psi.FileName = "git";
-            //psi.Arguments = "log";
-            //psi.UseShellExecute = false;
-            //psi.RedirectStandardOutput = true;
-            //psi.RedirectStandardInput = true;
-            //psi.WorkingDirectory = "xxx";
-            //Process process = Process.Start(psi);
-            //StreamReader stream = process.StandardOutput;
-            //Console.WriteLine(stream.ReadToEnd());
-
-            //Console.WriteLine(_out);
-            //GitHelper.Checkout("dev", true);
-            //process.
-            //string s = process.StandardOutput.ReadToEnd();
-            //Console.WriteLine(s);
-
-            //Console.Read();
         }
     }
 }
