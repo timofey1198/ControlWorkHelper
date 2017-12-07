@@ -13,7 +13,14 @@ namespace ControlWorkHelper
                 // Проверка на гит
                 try
                 {
-                    Process.Start("git", "help");
+                    ProcessStartInfo psi = new ProcessStartInfo();
+                    psi.FileName = "git";
+                    psi.Arguments = "help";
+                    psi.UseShellExecute = false;
+                    psi.RedirectStandardOutput = true;
+                    psi.RedirectStandardInput = true;
+                    psi.RedirectStandardError = true;
+                    Process.Start(psi);
                 }
                 catch
                 {
@@ -44,7 +51,7 @@ namespace ControlWorkHelper
                 // Ввод названия репозитория контрольной
                 string repos = "";
                 string confirm = "n";
-                while (confirm == "n")
+                while (confirm != "y")
                 {
                     Console.WriteLine("Введите название работы (имя репозитория):");
                     repos = Console.ReadLine();
