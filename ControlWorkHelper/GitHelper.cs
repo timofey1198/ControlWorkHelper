@@ -87,13 +87,19 @@ namespace ControlWorkHelper
             psi.Arguments = string.Format("clone {0} {1}", repos, directory);
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardInput = true;
+            psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
+
             // Создаем процесс
             Process process = Process.Start(psi);
             StreamReader output = process.StandardOutput;
+            string allOutput = "";
+            string outputString;
             while (!output.EndOfStream)
             {
-                Console.WriteLine(output.ReadLine());
+                outputString = output.ReadLine();
+                Console.WriteLine(outputString);
+                allOutput += outputString;
             }
         }
     }
