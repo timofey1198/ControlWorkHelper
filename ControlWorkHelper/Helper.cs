@@ -50,5 +50,25 @@ namespace ControlWorkHelper
             }
             return n;
         }
+
+        public static DateTime DateInput(string welcome)
+        {
+            DateTime date = new DateTime();
+            Console.WriteLine(welcome);
+            int year = IntInput("Введите год:", 2017, 2021);
+            int month = IntInput("Введите месяц:", 1, 12);
+            int day = IntInput("Введите число:", 1, 31);
+            int hour = IntInput("Введите час:", 0, 23);
+            int minute = IntInput("Введите минуту:", 0, 59);
+            try
+            {
+                date = new DateTime(year, month, day, hour, minute, 0);
+            }
+            catch
+            {
+                date = DateInput("Неверная дата. Повторите ввод:");
+            }
+            return date;
+        }
     }
 }
