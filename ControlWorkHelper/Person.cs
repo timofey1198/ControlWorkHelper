@@ -27,6 +27,7 @@ namespace ControlWorkHelper
             Surname = "";
             PenaltyPoints = 0;
             Comment = "";
+            LastCommit = new Commit();
         }
 
         public override string ToString()
