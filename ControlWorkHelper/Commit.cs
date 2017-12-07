@@ -26,6 +26,9 @@ namespace ControlWorkHelper
             CommitText = "";
         }
 
-        public Commit() { }
+        public Commit()
+        {
+            Date = DateTime.MinValue;
+        }
     }
 }
